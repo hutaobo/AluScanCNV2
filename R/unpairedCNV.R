@@ -23,9 +23,9 @@ unpairedCNV <- function(sample.5k.doc, sample.name, window.size = "500k", qOutli
 
   sample.5k.read <- read.table(sample.5k.doc)
   sample.5k.read <- sample.5k.read[, c(1:3, 6)]
+  sample.5k.read <- merge(bin.5k[, 1:3], sample.5k.read, all = TRUE, sort = FALSE)
   colnames(sample.5k.read) <- c("chr", "start", "end", sample.name)
   sample.5k.read[, 4] <- outlier(sample.5k.read[, 4])
-  sample.5k.read <- merge(bin.5k[, 1:3], sample.5k.read, all = TRUE)
   sample.5k.read[is.na(sample.5k.read)] <- 0
   sample.read <- tapply(sample.5k.read[, 4], as.factor(factor$F), sum)
 
@@ -40,7 +40,7 @@ unpairedCNV <- function(sample.5k.doc, sample.name, window.size = "500k", qOutli
     acgt <- letterFrequency(seq, "ACGT")
     as.vector(ifelse(acgt == 0, NA, gc/acgt))
   }  # from SomaticSignatures
-  bin.5k.gr <- GRanges(seqname = as.character(read$chr), IRanges(start = read$start, end = read$end))
+  bin.5k.gr <- GRanges(seqname = as.character(bin.5k$chr), IRanges(start = bin.5k$start, end = bin.5k$end))
   GC.5k <- gcContent(bin.5k.gr)  # GC5k
   bin.gr <- GRanges(seqname = as.character(bin$V1), IRanges(start = bin$V2, end = bin$V3))
   GC <- gcContent(bin.gr)  # GC500k
