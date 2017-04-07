@@ -4,7 +4,8 @@
 \alias{unpairedCNV}
 \title{Unpaired CNV calling}
 \usage{
-unpairedCNV(sample.5k.doc, sample.name, window.size = "500k",
+unpairedCNV(sample.5k.doc, sample.name, window.size = c("500k", "400k",
+  "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"),
   qOutlier = 0.95)
 }
 \description{
