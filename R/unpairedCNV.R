@@ -1,4 +1,11 @@
-library(data.table)
+#' Unpaired CNV calling
+#'
+#' https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
+#' @param
+#' @keywords
+#' @export
+#' @examples
+#' unpairedCNV()
 
 unpairedCNV <- function(sample.5k.doc, sample.name, window.size = "500k", qOutlier = 0.95) {
   factor <- get(paste0("factor.", window.size))  # F

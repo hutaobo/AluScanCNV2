@@ -1,3 +1,12 @@
+#' CNV calling
+#'
+#' https://github.com/hliang/cnv-seq/blob/master/cnv/R/cnv.R
+#' @param
+#' @keywords
+#' @export
+#' @examples
+#' cnv.cal()
+
 cnv.cal <- function(data, log2.threshold = 0.6, chromosomal.normalization = FALSE, annotate = FALSE, minimum.window = 4) {
   if (is.na(log2.threshold)) {
     log2.threshold <- as.numeric(sub("\\.pvalue-.+$", "", sub("^.+\\.log2-", "", file, perl = TRUE), perl = TRUE))
