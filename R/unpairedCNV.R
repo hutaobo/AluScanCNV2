@@ -24,7 +24,6 @@ unpairedCNV <- function(sample.5k.doc, sample.name, window.size = c("500k", "400
   } else if (seq.method == "WGS") {
     ref.5k.read <- WGS.ref.5k.reads
   }
-  ref.5k.read <- AluScan.ref.5k.reads
   ref.5k.read[, 4:ncol(ref.5k.read)] <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, outlier)
   ref.read <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, function(x) tapply(x, as.factor(factor$F), sum))
 
