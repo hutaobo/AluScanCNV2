@@ -50,7 +50,7 @@ unpairedCNV <- function(sample.5k.doc, sample.name, window.size = c("500k", "400
     acgt <- letterFrequency(seq, "ACGT")
     as.vector(ifelse(acgt == 0, NA, gc/acgt))
   }  # from SomaticSignatures
-  bin.5k.gr <- GRanges(seqname = as.character(bin.5k$chr), IRanges(start = bin.5k$start, end = bin.5k$end))
+  bin.5k.gr <- GRanges(seqname = as.character(bin.5k$V1), IRanges(start = bin.5k$V2, end = bin.5k$V3))
   GC.5k <- gcContent(bin.5k.gr)  # GC5k
   bin.gr <- GRanges(seqname = as.character(bin$V1), IRanges(start = bin$V2, end = bin$V3))
   GC <- gcContent(bin.gr)  # GC500k
