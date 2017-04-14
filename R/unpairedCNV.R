@@ -7,7 +7,7 @@
 #' @examples
 #' unpairedCNV()
 
-unpairedCNV <- function(sample.5k.doc, sample.name, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), qOutlier = 0.95) {
+unpairedCNV <- function(sample.5k.doc, sample.name, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), custom.ref = NULL, qOutlier = 0.95) {
   window.size <- window.size[1]
   factor <- get(paste0("factor.", window.size))  # F
   bin <- get(paste0("bin.", window.size))  # FR
@@ -19,16 +19,20 @@ unpairedCNV <- function(sample.5k.doc, sample.name, window.size = c("500k", "400
   }  # remove outliers
 
   seq.method <- seq.method[1]
-  if(seq.method == "AluScan") {
-    ref.5k.read <- AluScan.ref.5k.reads
-  } else if (seq.method == "WGS") {
-    ref.5k.read <- WGS.ref.5k.reads
+  if (is.null(custom.ref)) {
+    if (seq.method == "AluScan") {
+      ref.5k.read <- AluScan.ref.5k.reads
+    } else if (seq.method == "WGS") {
+      ref.5k.read <- WGS.ref.5k.reads
+    }
+  } else {
+    ref.5k.read <- custom.ref
   }
   ref.5k.read[, 4:ncol(ref.5k.read)] <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, outlier)
   ref.read <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, function(x) tapply(x, as.factor(factor$F), sum))
 
   sample.5k.read <- read.table(sample.5k.doc)
-  if(!grepl("chr", sample.5k.read[1, 1])) {
+  if (!grepl("chr", sample.5k.read[1, 1])) {
     sample.5k.read[, 1] <- paste0("chr", sample.5k.read[, 1])
   }
   sample.5k.read <- sample.5k.read[, c(1:3, 6)]
