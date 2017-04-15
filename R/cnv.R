@@ -2,7 +2,7 @@
 #' @keywords internal
 #' @export
 #' @examples
-#' cnv.cal()
+#' z2t()
 z2t <- function(z, lambdax, lambday) {
     (lambday * z - lambdax)/sqrt(lambday * z^2 + lambdax)
 }
@@ -11,7 +11,7 @@ z2t <- function(z, lambdax, lambday) {
 #' @keywords internal
 #' @export
 #' @examples
-#' cnv.cal()
+#' cnv.ANNO()
 cnv.ANNO <- function(cnv.sub, anno.last, step, minimum.window, threshold) {
     if (nrow(cnv.sub) > 1) {
         distance <- cnv.sub[2:nrow(cnv.sub), "start"] - cnv.sub[1:(nrow(cnv.sub) - 1), "start"]
@@ -64,10 +64,10 @@ cnv.cal <- function(data, log2.threshold = 0.6, chromosomal.normalization = FALS
             sub$log2 <- log2(sub$test/sub$ref/norm)
             data[rownames(sub), "log2"] <- sub$log2
             subp <- subset(sub, log2 >= 0)
-            if (nrow(subp) > 0) 
+            if (nrow(subp) > 0)
                 data[rownames(subp), "p.value"] <- pnorm(z2t(subp$test/subp$ref, lambda.test, lambda.ref), lower.tail = FALSE)
             subn <- subset(sub, log2 < 0)
-            if (nrow(subn) > 0) 
+            if (nrow(subn) > 0)
                 data[rownames(subn), "p.value"] <- pnorm(z2t(subn$test/subn$ref, lambda.test, lambda.ref), lower.tail = TRUE)
         }
     } else {
@@ -100,7 +100,7 @@ cnv.cal <- function(data, log2.threshold = 0.6, chromosomal.normalization = FALS
         data$cnv.size <- NA
         data$cnv.log2 <- NA
         data$cnv.p.value <- NA
-        
+
         window.size <- data[1, "end"] - data[1, "start"] + 1
         step <- window.size/2
         for (chr in chrom) {
@@ -115,7 +115,7 @@ cnv.cal <- function(data, log2.threshold = 0.6, chromosomal.normalization = FALS
                 data[rownames(cnv.n), "cnv"] <- cnv.n$cnv
             }
         }
-        
+
         if (max(data$cnv) > 0) {
             for (id in seq(1, max(data$cnv))) {
                 print(paste("cnv_id: ", id, " of ", max(data$cnv)))
