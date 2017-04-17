@@ -6,7 +6,7 @@
 \usage{
 pairedCNV(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k",
   "300k", "200k", "100k", "50k"), gender = c("NA", "M", "F"),
-  qOutlier = 0.95, ...)
+  qOutlier = 0.95, output.path = "./", ...)
 }
 \description{
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf

@@ -7,7 +7,7 @@
 #' @examples
 #' unpairedCNV()
 
-unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, qOutlier = 0.95, ...) {
+unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, qOutlier = 0.95, output.path = "./", ...) {
   sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
   window.size <- window.size[1]
   factor <- get(paste0("factor.", window.size))  # F
@@ -80,5 +80,5 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
     }
   }
   data <- localCNV4Pool(sample.read, ref.read, GC, pos, GCmedian = TRUE)
-  write.table(data, paste(sample.name, ".local.", window.size, ".unpaired.seg", sep = ""), col.name = T, row.name = FALSE, quote = FALSE, sep = "\t")
+  write.table(data, paste(output.path, sample.name, ".local.", window.size, ".unpaired.seg", sep = ""), col.name = T, row.name = FALSE, quote = FALSE, sep = "\t")
 }
