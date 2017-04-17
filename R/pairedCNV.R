@@ -7,15 +7,79 @@
 #' @examples
 #' pairedCNV()
 
-##################
-####	demo.R	####
-##################
+pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), gender = c("NA", "M", "F"), qOutlier = 0.95) {
+  require(data.table)
+  sample_name <- sub(".5k.doc", "", basename(sample.5k.doc))
+  control_name <- sub(".5k.doc", "", basename(control.5k.doc))
 
-##################
-####	library	####
-##################
-source("cnvF.R")
-library(data.table)
+  window.size <- window.size[1]
+  factor <- get(paste0("factor.", window.size))  # F
+  bin <- get(paste0("bin.", window.size))  # FR
+  pos <- get(paste0("pos.", window.size))  # FR2
+
+  outlier <- function(x) {
+    x[x > quantile(x, qOutlier)] <- quantile(x, qOutlier)
+    return(x)
+  }  # remove outliers
+
+  sample.5k.read <- read.table(sample.5k.doc)
+  if (!grepl("chr", sample.5k.read[1, 1])) {
+    sample.5k.read[, 1] <- paste0("chr", sample.5k.read[, 1])
+  }
+  sample.5k.read <- sample.5k.read[, c(1:3, 6)]
+  sample.5k.read <- merge(bin.5k[, 1:3], sample.5k.read, all = TRUE, sort = FALSE)
+  sample.5k.read[is.na(sample.5k.read)] <- 0
+  colnames(sample.5k.read) <- c("chr", "start", "end", sample.name)
+  sample.5k.read[, 4] <- outlier(sample.5k.read[, 4])
+  sample.read <- tapply(sample.5k.read[, 4], as.factor(factor$F), sum)
+
+  #### About sex chromosome
+  chrX = pos0$chr==23
+  chrY = pos0$chr==24
+  autosome = pos0$chr<=22
+
+
+  # F <- get(paste0('factor.', window.size)) FR <- get(paste0('bin.', window.size)) FR2 <- get(paste0('pos.', window.size))
+
+  library(BSgenome.Hsapiens.UCSC.hg19)
+  gcContent <- function(regions, ref = BSgenome.Hsapiens.UCSC.hg19) {
+    seq <- getSeq(ref, regions)
+    gc <- letterFrequency(seq, "GC")
+    acgt <- letterFrequency(seq, "ACGT")
+    as.vector(ifelse(acgt == 0, NA, gc/acgt))
+  }  # from SomaticSignatures
+  bin.5k.gr <- GRanges(seqname = as.character(bin.5k$V1), IRanges(start = bin.5k$V2, end = bin.5k$V3))
+  GC.5k <- gcContent(bin.5k.gr)  # GC5k
+  bin.gr <- GRanges(seqname = as.character(bin$V1), IRanges(start = bin$V2, end = bin$V3))
+  GC <- gcContent(bin.gr)  # GC500k
+
+  localCNV4Pool <- function(Test, Ref, GC, Pos, GCmedian = TRUE) {
+    if (GCmedian) {
+      indexRef <- apply(Ref, 1, prod) > 0
+      index <- Test > 0 & indexRef
+      refSum <- rowSums(Ref)
+      GCGroups <- cut(GC[index], seq(0, 1, 0.05))
+      TestGC <- tapply(Test[index], GCGroups, median)
+      RefGC <- tapply(refSum[index], GCGroups, median)
+      TestL <- TestGC[GCGroups]
+      RefL <- RefGC[GCGroups]
+      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], test = Test[index], ref = refSum[index], GClambdaTest = TestL, GClambdaRef = RefL, gc = GCGroups)
+      results <- cnv.cal(data)
+    } else {
+      indexRef <- apply(Ref, 1, prod) > 0
+      index <- Test > 0 & indexRef
+      refSum <- rowSums(Ref)
+      TestL <- mean(Test[index])
+      RefL <- mean(refSum[index])
+      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], test = Test[index], ref = refSum[index], GClambdaTest = TestL, GClambdaRef = RefL, gc = GCGroups)
+      results <- cnv.cal(data)
+    }
+  }
+  data <- localCNV4Pool(sample.read, ref.read, GC, pos, GCmedian = TRUE)
+  write.table(data, paste(sample.name, ".local.", window.size, ".paired.seg", sep = ""), col.name = T, row.name = FALSE, quote = FALSE, sep = "\t")
+
+
+
 file.path <- "~/Software/AluScanCNV/Perl scripts/"
 
 ######################
@@ -26,37 +90,6 @@ window.size <- "500k"
 reads.file.path <- "./"
 output.path <- "~/Downloads/"
 
-# panel 1 & 2
-# sample.list <- c("GC1A", "GC1A", "GC1C", "GC2A", "GC2A", "GC2C", "GC3A", "GC3A", "GC3C", "GC4A", "GC4A", "GC4C", "GC5A", "GC5A", "GC5C",
-#	"Breast", "Breast", "Normal", "PBT2T", "PBT2T", "HL3T", "PBT6T", "PBT6T", "HL1T", "PBT7T", "PBT7T", "HL2T", "LC5", "LC5", "LC5N",
-#	"LC6", "LC6", "LC6N", "LC11", "LC11", "LC11N", "LC106", "LC106", "LC106N", "LiverT", "LiverT", "LiverN", "LG1T", "LG1T", "LG1N",
-#	"LG2T", "LG2T", "LG2N", "LG3T", "LG3T", "LG3N", "LG5T", "LG5T", "LG5N")
-#
-# control.list <- c("GC1C", "GC1D", "GC1D", "GC2C", "GC2D", "GC2D", "GC3C", "GC3D", "GC3D", "GC4C", "GC4D", "GC4D", "GC5C", "GC5D", "GC5D",
-#	"Normal", "Blood", "Blood", "HL3T", "PBT2N", "PBT2N", "HL1T", "PBT6N", "PBT6N", "HL2T", "PBT7N", "PBT7N", "LC5N", "LC5B", "LC5B",
-#	"LC6N", "LC6B", "LC6B", "LC11N", "LC11B", "LC11B", "LC106N", "LC106B", "LC106B", "LiverN", "LiverB", "LiverB", "LG1N", "LG1B", "LG1B",
-#	"LG2N", "LG2B", "LG2B", "LG3N", "LG3B", "LG3B", "LG5N", "LG5B", "LG5B")
-
-# panel 3
-# sample.list <- c("Meta", "Meta", "Meta", "GC1A", "GC1B", "GC1B", "GC2A", "GC2B", "GC2B", "GC3A", "GC3B", "GC3B", "GC4A", "GC4B", "GC4B", "GC5A", "GC5B", "GC5B",
-# 	"LC5", "LC5L", "LC5L", "LC6", "LC6L", "LC6L", "LC11", "LC11L", "LC11L")
-#
-# control.list <- c("Breast", "Normal", "Blood", "GC1B", "GC1C", "GC1D", "GC2B", "GC2C", "GC2D", "GC3B", "GC3C", "GC3D", "GC4B", "GC4C", "GC4D", "GC5B", "GC5C", "GC5D",
-# 	"LC5L", "LC5N", "LC5B", "LC6L", "LC6N", "LC6B", "LC11L", "LC11N", "LC11B")
-
-# WGS
-# sample.list <- c("D430P", "D430M", "D430M", "D441P", "D441M", "D441M", "D473P", "D473M", "D473M", "D559P", "D559M", "D559M")
-# control.list <- c("D430N", "D430N", "D430P", "D441N", "D441N", "D441P", "D473N", "D473N", "D473P", "D559N", "D559N", "D559P")
-
-# new breast samples
-# sample.list <- c("Breast1_3", "Breast1_2", "Breast1_1", "Breast1_2", "Breast1_1", "Breast1_1", "Breast2_3", "Breast2_2", "Breast2_1", "Breast2_2", "Breast2_1", "Breast2_1", "Breast3_3", "Breast3_2", "Breast3_1", "Breast3_2", "Breast3_1", "Breast3_1")
-# control.list <- c("Breast1_b", "Breast1_b", "Breast1_b", "Breast1_3", "Breast1_3", "Breast1_2", "Breast2_b", "Breast2_b", "Breast2_b", "Breast2_3", "Breast2_3", "Breast2_2", "Breast3_b", "Breast3_b", "Breast3_b", "Breast3_3", "Breast3_3", "Breast3_2")
-
-# new lung samples
-# sample.list <- c("LG39N", "LG39T", "LG39T")
-# control.list <- c("LG39B", "LG39B", "LG39N")
-
-# Breast06
 sample.list <- c("6-3-3", "6-2-3", "6-1-4", "6-2-3", "6-1-4", "6-1-4")
 control.list <- c("6b-4", "6b-4", "6b-4", "6-3-3", "6-3-3", "6-2-3")
 
@@ -170,4 +203,6 @@ for(i in 1:length(sample.list))
 
 		write.table(X216T500k_r, paste(output.path, sample.list[i], "-", control.list[i], ".local.", window.size, ".paired.seg", sep=""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
 	}
+}
+
 }

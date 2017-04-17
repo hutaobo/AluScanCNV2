@@ -7,7 +7,8 @@
 #' @examples
 #' unpairedCNV()
 
-unpairedCNV <- function(sample.5k.doc, sample.name, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), custom.ref = NULL, qOutlier = 0.95) {
+unpairedCNV <- function(sample.5k.doc, sample.name, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, qOutlier = 0.95) {
+  sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
   window.size <- window.size[1]
   factor <- get(paste0("factor.", window.size))  # F
   bin <- get(paste0("bin.", window.size))  # FR
