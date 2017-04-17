@@ -46,9 +46,6 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
 
 
 
-
-  # F <- get(paste0('factor.', window.size)) FR <- get(paste0('bin.', window.size)) FR2 <- get(paste0('pos.', window.size))
-
   library(BSgenome.Hsapiens.UCSC.hg19)
   gcContent <- function(regions, ref = BSgenome.Hsapiens.UCSC.hg19) {
     seq <- getSeq(ref, regions)
@@ -56,36 +53,34 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
     acgt <- letterFrequency(seq, "ACGT")
     as.vector(ifelse(acgt == 0, NA, gc/acgt))
   }  # from SomaticSignatures
-  bin.5k.gr <- GRanges(seqname = as.character(bin.5k$V1), IRanges(start = bin.5k$V2, end = bin.5k$V3))
-  GC.5k <- gcContent(bin.5k.gr)  # GC5k
   bin.gr <- GRanges(seqname = as.character(bin$V1), IRanges(start = bin$V2, end = bin$V3))
   GC <- gcContent(bin.gr)  # GC500k
 
-  localCNV4Paired <- function(Test, Ref, GC, Pos, GCmedian = TRUE) {
-    # Both of Test and Ref are
+  localCNV4Paired <- function(Sample, Control, GC, Pos, GCmedian = TRUE) {
+    # Both of Sample and Control are
     if (GCmedian) {
-      index <- apply(cbind(Test, Ref), 1, prod) > 0
+      index <- apply(cbind(Sample, Control), 1, prod) > 0
       GCGroups <- cut(GC[index], seq(0, 1, 0.05))
-      TestGC <- tapply(Test[index], GCGroups, median)
-      RefGC <- tapply(Ref[index], GCGroups, median)
-      TestL <- TestGC[GCGroups]
-      RefL <- RefGC[GCGroups]
-      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], test = Test[index], ref = Ref[index], GClambdaTest = TestL, GClambdaRef = RefL, gc = GCGroups)
+      SampleGC <- tapply(Sample[index], GCGroups, median)
+      ControlGC <- tapply(Control[index], GCGroups, median)
+      SampleL <- SampleGC[GCGroups]
+      ControlL <- ControlGC[GCGroups]
+      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], Sample = Sample[index], Control = Control[index], GClambdaSample = SampleL, GClambdaControl = ControlL, gc = GCGroups)
       results <- cnv.cal(data)
     } else {
-      index <- apply(cbind(Test, Ref), 1, prod) > 0
+      index <- apply(cbind(Sample, Control), 1, prod) > 0
       GCGroups <- cut(GC[index], seq(0, 1, 0.05))
-      TestL <- mean(Test[index])
-      RefL <- mean(Ref[index])
-      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], test = Test[index], ref = Ref[index], GClambdaTest = TestL, GClambdaRef = RefL, gc = GCGroups)
+      SampleL <- mean(Sample[index])
+      ControlL <- mean(Control[index])
+      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], Sample = Sample[index], Control = Control[index], GClambdaSample = SampleL, GClambdaControl = ControlL, gc = GCGroups)
       results <- cnv.cal(data)
     }
   }
 
   #### About sex chromosome
-  chrX <- pos0$chr == 23
-  chrY <- pos0$chr == 24
-  autosome <- pos0$chr <= 22
+  chrX <- pos.5k$chr == 23
+  chrY <- pos.5k$chr == 24
+  autosome <- pos.5k$chr <= 22
 
   #### male samples
 
