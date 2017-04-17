@@ -4,9 +4,9 @@
 \alias{unpairedCNV}
 \title{Unpaired CNV calling}
 \usage{
-unpairedCNV(sample.5k.doc, sample.name, window.size = c("500k", "400k",
-  "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"),
-  qOutlier = 0.95)
+unpairedCNV(sample.5k.doc, window.size = c("500k", "400k", "300k", "200k",
+  "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M",
+  "F"), custom.ref = NULL, qOutlier = 0.95, ...)
 }
 \description{
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf

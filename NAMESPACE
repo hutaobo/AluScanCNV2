@@ -2,5 +2,6 @@
 
 export(cnv.ANNO)
 export(cnv.cal)
+export(pairedCNV)
 export(unpairedCNV)
 export(z2t)
