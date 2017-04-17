@@ -65,14 +65,14 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
       ControlGC <- tapply(Control[index], GCGroups, median)
       SampleL <- SampleGC[GCGroups]
       ControlL <- ControlGC[GCGroups]
-      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], Sample = Sample[index], Control = Control[index], GClambdaSample = SampleL, GClambdaControl = ControlL, gc = GCGroups)
+      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], test = Sample[index], ref = Control[index], GClambdaTest = SampleL, GClambdaRef = ControlL, gc = GCGroups)
       results <- cnv.cal(data)
     } else {
       index <- apply(cbind(Sample, Control), 1, prod) > 0
       GCGroups <- cut(GC[index], seq(0, 1, 0.05))
       SampleL <- mean(Sample[index])
       ControlL <- mean(Control[index])
-      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], Sample = Sample[index], Control = Control[index], GClambdaSample = SampleL, GClambdaControl = ControlL, gc = GCGroups)
+      data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], test = Sample[index], ref = Control[index], GClambdaTest = SampleL, GClambdaRef = ControlL, gc = GCGroups)
       results <- cnv.cal(data)
     }
   }
