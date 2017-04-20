@@ -32,7 +32,7 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
   ref.5k.read[, 4:ncol(ref.5k.read)] <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, outlier)
   ref.read <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, function(x) tapply(x, as.factor(factor$F), sum))
 
-  sample.5k.read <- read.table(sample.5k.doc)
+  sample.5k.read <- read.table(sample.5k.doc, stringsAsFactors = FALSE)
   if (!grepl("chr", sample.5k.read[1, 1])) {
     sample.5k.read[, 1] <- paste0("chr", sample.5k.read[, 1])
   }

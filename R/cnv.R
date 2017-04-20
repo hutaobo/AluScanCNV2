@@ -3,15 +3,18 @@
 #' @export
 #' @examples
 #' z2t()
+
 z2t <- function(z, lambdax, lambday) {
     (lambday * z - lambdax)/sqrt(lambday * z^2 + lambdax)
 }
+
 
 #' @param
 #' @keywords internal
 #' @export
 #' @examples
 #' cnv.ANNO()
+
 cnv.ANNO <- function(cnv.sub, anno.last, step, minimum.window, threshold) {
     if (nrow(cnv.sub) > 1) {
         distance <- cnv.sub[2:nrow(cnv.sub), "start"] - cnv.sub[1:(nrow(cnv.sub) - 1), "start"]
@@ -35,12 +38,14 @@ cnv.ANNO <- function(cnv.sub, anno.last, step, minimum.window, threshold) {
     cnv.sub
 }
 
+
 #' https://github.com/hliang/cnv-seq/blob/master/cnv/R/cnv.R
 #' @param
 #' @keywords internal
 #' @export
 #' @examples
 #' cnv.cal()
+
 cnv.cal <- function(data, log2.threshold = 0.6, chromosomal.normalization = FALSE, annotate = FALSE, minimum.window = 4) {
     if (is.na(log2.threshold)) {
         log2.threshold <- as.numeric(sub("\\.pvalue-.+$", "", sub("^.+\\.log2-", "", file, perl = TRUE), perl = TRUE))
