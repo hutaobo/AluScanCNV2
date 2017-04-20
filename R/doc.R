@@ -27,7 +27,7 @@ dataMerge <- function(data_1, data_2) {
 #' @examples
 #' doc2data()
 
-doc2data <- function(doc.list) {
+doc2data <- function(doc.list, write.file = TRUE) {
   docs <- read.table(doc.list, stringsAsFactors = FALSE)
   for (i in 1:nrow(docs)) {
     doc_file <- read.table(paste0(docs[i, ]))
@@ -43,7 +43,11 @@ doc2data <- function(doc.list) {
   if (!grepl("chr", data_file[1, 1])) {
     data_file$chr <- paste0("chr", data_file$chr)
   }
-  ord <- with(data_file, order(chr, start))
+  ord <- with(data_file, gtools::mixedorder(chr, start))
   data_file <- data_file[ord, ]
-  write.table(data_file, file = "reads.5k.data", quote = FALSE, col.names = TRUE, row.names = FALSE, sep = "\t")
+  if (write.file == TRUE) {
+    write.table(data_file, file = "reads.5k.data", quote = FALSE, col.names = TRUE, row.names = FALSE, sep = "\t")
+  } else {
+    return(data_file)
+  }
 }
