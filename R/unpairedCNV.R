@@ -82,7 +82,7 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
   }
   if (gender == "NA") {
     ind <- pos$chr <= 22
+    data <- localCNV4Pool(sample.read[ind], ref.read[ind, ], GC[ind], pos[ind, ], GCmedian = TRUE)
   }
-  data <- localCNV4Pool(sample.read[ind], ref.read[ind, ], GC[ind], pos[ind, ], GCmedian = TRUE)
   write.table(data, paste(output.path, sample.name, ".local.", window.size, ".unpaired.seg", sep = ""), col.name = T, row.name = FALSE, quote = FALSE, sep = "\t")
 }
