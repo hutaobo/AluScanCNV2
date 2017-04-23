@@ -77,10 +77,6 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
     }
   }
 
-  #### About sex chromosome
-  chrX <- pos.5k$chr == 23
-  chrY <- pos.5k$chr == 24
-  autosome <- pos.5k$chr <= 22
 
   #### male samples
 
@@ -95,8 +91,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   #### female samples
 
   if (gender == "F") {
-    femaleChrs5k <- !chrY
-    femaleChrs500k <- FR2$chr <= 23
+    femaleChrs500k <- pos$chr <= 23
 
     data <- localCNV4Paired(sample.read[femaleChrs500k], control.read[femaleChrs500k], GC[femaleChrs500k], pos[femaleChrs500k, ], GCmedian = TRUE)
 
