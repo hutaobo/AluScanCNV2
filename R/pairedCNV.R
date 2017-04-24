@@ -75,27 +75,19 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
       data <- data.frame(chromosome = Pos[index, "chr"], start = Pos[index, "start"], end = Pos[index, "end"], test = Sample[index], ref = Control[index], GClambdaTest = SampleL, GClambdaRef = ControlL, gc = GCGroups)
       results <- cnv.cal(data)
     }
+    return(results)
   }
-
 
   #### male samples
-
   if (gender == "M") {
-    # Glioma sample: WN is tumor sample and WB is blood control; patient is male
-
     data <- localCNV4Paired(sample.read, control.read, GC, pos, GCmedian = TRUE)
-
-    write.table(data, paste(output.path, sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = ""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
-  }
-
-  #### female samples
-
-  if (gender == "F") {
-    femaleChrs500k <- pos$chr <= 23
-
-    data <- localCNV4Paired(sample.read[femaleChrs500k], control.read[femaleChrs500k], GC[femaleChrs500k], pos[femaleChrs500k, ], GCmedian = TRUE)
-
     write.table(data, paste(output.path, "/", sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = ""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
   }
 
+  #### female samples
+  if (gender == "F") {
+    femaleChrs500k <- pos$chr <= 23
+    data <- localCNV4Paired(sample.read[femaleChrs500k], control.read[femaleChrs500k], GC[femaleChrs500k], pos[femaleChrs500k, ], GCmedian = TRUE)
+    write.table(data, paste(output.path, "/", sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = ""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
+  }
 }
