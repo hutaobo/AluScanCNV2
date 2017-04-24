@@ -90,5 +90,5 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
   } else if (gender == "F") {
     data <- localCNV4Pool(sample.read, ref.read[, ref.info[ref.info$Gender == "F", "Name"]], GC, pos, GCmedian = TRUE)
   }
-  write.table(data, paste(output.path, sample.name, ".local.", window.size, ".unpaired.seg", sep = ""), col.name = T, row.name = FALSE, quote = FALSE, sep = "\t")
+  write.table(data, paste(output.path, "/", sample.name, ".local.", window.size, ".unpaired.seg", sep = ""), col.name = T, row.name = FALSE, quote = FALSE, sep = "\t")
 }

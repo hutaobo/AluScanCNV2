@@ -7,7 +7,7 @@
 #' @examples
 #' pairedCNV()
 
-pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), gender = c("NA", "M", "F"), qOutlier = 0.95, output.path = "./", ...) {
+pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), gender = c("M", "F"), qOutlier = 0.95, output.path = "./", ...) {
   require(data.table)
   sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
   control.name <- sub(".5k.doc", "", basename(control.5k.doc))
@@ -95,7 +95,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
 
     data <- localCNV4Paired(sample.read[femaleChrs500k], control.read[femaleChrs500k], GC[femaleChrs500k], pos[femaleChrs500k, ], GCmedian = TRUE)
 
-    write.table(data, paste(output.path, sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = ""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
+    write.table(data, paste(output.path, "/", sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = ""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
   }
 
 }
