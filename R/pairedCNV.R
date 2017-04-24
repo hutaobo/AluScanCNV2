@@ -8,7 +8,6 @@
 #' pairedCNV()
 
 pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), gender = c("M", "F"), qOutlier = 0.95, output.path = "./", ...) {
-  require(data.table)
   sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
   control.name <- sub(".5k.doc", "", basename(control.5k.doc))
   window.size <- window.size[1]
@@ -80,7 +79,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   #### male samples
   if (gender == "M") {
     data <- localCNV4Paired(sample.read, control.read, GC, pos, GCmedian = TRUE)
-    write.table(data, paste(output.path, sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = ""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
+    write.table(data, paste(output.path, "/", sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = ""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
   }
 
   #### female samples

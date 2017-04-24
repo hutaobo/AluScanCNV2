@@ -92,12 +92,12 @@ cnv.cal <- function(data, log2.threshold = 0.6, chromosomal.normalization = FALS
         subp <- subset(data, log2 >= 0)
         # data[rownames(subp),'p.value'] <- pnorm(z2t(subp$test/subp$ref,lambda.test,lambda.ref), lower.tail=FALSE)
         value <- z2t(subp$test/subp$ref, lambda.test[data$log2 >= 0], lambda.ref[data$log2 >= 0])
-        data[rownames(subp), "p.value"] <- pnorm(value, sd = sd(value), lower.tail = FALSE)
+        data[rownames(subp), "p.value"] <- pnorm(value, sd = sd(value, na.rm = TRUE), lower.tail = FALSE)
         data[rownames(subp), "zScore"] <- value
         subn <- subset(data, log2 < 0)
         # data[rownames(subn),'p.value'] <- pnorm(z2t(subn$test/subn$ref,lambda.test,lambda.ref), lower.tail=TRUE)
         value <- z2t(subn$test/subn$ref, lambda.test[data$log2 < 0], lambda.ref[data$log2 < 0])
-        data[rownames(subn), "p.value"] <- pnorm(value, sd = sd(value), lower.tail = TRUE)
+        data[rownames(subn), "p.value"] <- pnorm(value, sd = sd(value, na.rm = TRUE), lower.tail = TRUE)
         data[rownames(subn), "zScore"] <- value
     }
     if (annotate) {
