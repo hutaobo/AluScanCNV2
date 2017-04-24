@@ -46,10 +46,6 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
   sample.5k.read[, 4] <- outlier(sample.5k.read[, 4])
   sample.read <- tapply(sample.5k.read[, 4], as.factor(factor$F), sum)
 
-
-
-  # F <- get(paste0('factor.', window.size)) FR <- get(paste0('bin.', window.size)) FR2 <- get(paste0('pos.', window.size))
-
   library(BSgenome.Hsapiens.UCSC.hg19)
   gcContent <- function(regions, ref = BSgenome.Hsapiens.UCSC.hg19) {
     seq <- getSeq(ref, regions)
@@ -82,6 +78,7 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
       results <- cnv.cal(data)
     }
   }
+
   if (gender == "NA") {
     ind <- pos$chr <= 22
     data <- localCNV4Pool(sample.read[ind], ref.read[ind, ], GC[ind], pos[ind, ], GCmedian = TRUE)
