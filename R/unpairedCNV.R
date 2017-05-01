@@ -7,7 +7,7 @@
 #' @examples
 #' unpairedCNV()
 
-unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, qOutlier = 0.95, output.path = "./", ...) {
+unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, custom.ref.info = NULL, qOutlier = 0.95, output.path = "./", ...) {
   sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
   window.size <- window.size[1]
   gender <- gender[1]
@@ -31,6 +31,7 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
     }
   } else {
     ref.5k.read <- custom.ref
+    ref.info <- custom.ref.info
   }
   ref.5k.read[, 4:ncol(ref.5k.read)] <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, outlier)
   ref.read <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, function(x) tapply(x, as.factor(factor$F), sum))
