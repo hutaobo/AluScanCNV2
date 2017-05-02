@@ -21,7 +21,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
     return(x)
   }  # remove outliers
 
-  sample.5k.read <- read.table(sample.5k.doc)
+  sample.5k.read <- read.table(sample.5k.doc, stringsAsFactors = FALSE)
   if (!grepl("chr", sample.5k.read[1, 1])) {
     sample.5k.read[, 1] <- paste0("chr", sample.5k.read[, 1])
   }
@@ -32,7 +32,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   sample.5k.read[, 4] <- outlier(sample.5k.read[, 4])
   sample.read <- tapply(sample.5k.read[, 4], as.factor(factor$F), sum)
 
-  control.5k.read <- read.table(control.5k.doc)
+  control.5k.read <- read.table(control.5k.doc, stringsAsFactors = FALSE)
   if (!grepl("chr", control.5k.read[1, 1])) {
     control.5k.read[, 1] <- paste0("chr", control.5k.read[, 1])
   }
@@ -42,8 +42,6 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   colnames(control.5k.read) <- c("chr", "start", "end", control.name)
   control.5k.read[, 4] <- outlier(control.5k.read[, 4])
   control.read <- tapply(control.5k.read[, 4], as.factor(factor$F), sum)
-
-
 
   library(BSgenome.Hsapiens.UCSC.hg19)
   gcContent <- function(regions, ref = BSgenome.Hsapiens.UCSC.hg19) {
