@@ -44,6 +44,8 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
   if(doc.file == TRUE) {
     sample.5k.read <- read.table(sample.5k.doc, stringsAsFactors = FALSE)
     sample.5k.read <- sample.5k.read[, c(1:3, 6)]
+  } else {
+    sample.5k.read <- sample.5k.doc
   }
   if (!grepl("chr", sample.5k.read[1, 1])) {
     sample.5k.read[, 1] <- paste0("chr", sample.5k.read[, 1])

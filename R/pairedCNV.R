@@ -30,6 +30,8 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   if(doc.file == TRUE) {
     sample.5k.read <- read.table(sample.5k.doc, stringsAsFactors = FALSE)
     sample.5k.read <- sample.5k.read[, c(1:3, 6)]
+  } else {
+    sample.5k.read <- sample.5k.doc
   }
   if (!grepl("chr", sample.5k.read[1, 1])) {
     sample.5k.read[, 1] <- paste0("chr", sample.5k.read[, 1])
@@ -43,6 +45,8 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   if(doc.file == TRUE) {
     control.5k.read <- read.table(control.5k.doc, stringsAsFactors = FALSE)
     control.5k.read <- control.5k.read[, c(1:3, 6)]
+  } else {
+    control.5k.read <- control.5k.doc
   }
   if (!grepl("chr", control.5k.read[1, 1])) {
     control.5k.read[, 1] <- paste0("chr", control.5k.read[, 1])
