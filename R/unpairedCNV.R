@@ -81,8 +81,6 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
     }
   }
 
-  sample.read[sample.read == "chr23"] <- "chrX"
-  sample.read[sample.read == "chr24"] <- "chrY"
   if (gender == "NA") {
     ind <- pos$chr <= 22
     data <- localCNV4Pool(sample.read[ind], ref.read[ind, ], GC[ind], pos[ind, ], GCmedian = TRUE)
