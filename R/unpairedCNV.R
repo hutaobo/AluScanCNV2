@@ -56,15 +56,7 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
   sample.5k.read[, 4] <- outlier(sample.5k.read[, 4])
   sample.read <- tapply(sample.5k.read[, 4], as.factor(factor$F), sum)
 
-  library(BSgenome.Hsapiens.UCSC.hg19)
-  gcContent <- function(regions, ref = BSgenome.Hsapiens.UCSC.hg19) {
-    seq <- getSeq(ref, regions)
-    gc <- letterFrequency(seq, "GC")
-    acgt <- letterFrequency(seq, "ACGT")
-    as.vector(ifelse(acgt == 0, NA, gc/acgt))
-  }  # from SomaticSignatures
-  bin.gr <- GRanges(seqname = as.character(bin$V1), IRanges(start = bin$V2, end = bin$V3))
-  GC <- gcContent(bin.gr)  # GC500k
+  GC <- get(paste0("GC.", window.size))
 
   localCNV4Pool <- function(Test, Ref, GC, Pos, GCmedian = TRUE) {
     if (GCmedian) {

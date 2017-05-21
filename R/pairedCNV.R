@@ -57,15 +57,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   control.5k.read[, 4] <- outlier(control.5k.read[, 4])
   control.read <- tapply(control.5k.read[, 4], as.factor(factor$F), sum)
 
-  library(BSgenome.Hsapiens.UCSC.hg19)
-  gcContent <- function(regions, ref = BSgenome.Hsapiens.UCSC.hg19) {
-    seq <- getSeq(ref, regions)
-    gc <- letterFrequency(seq, "GC")
-    acgt <- letterFrequency(seq, "ACGT")
-    as.vector(ifelse(acgt == 0, NA, gc/acgt))
-  }  # from SomaticSignatures
-  bin.gr <- GRanges(seqname = as.character(bin$V1), IRanges(start = bin$V2, end = bin$V3))
-  GC <- gcContent(bin.gr)  # GC500k
+  GC <- get(paste0("GC.", window.size))
 
   localCNV4Paired <- function(Sample, Control, GC, Pos, GCmedian = TRUE) {
     # Both of Sample and Control are

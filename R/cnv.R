@@ -2,6 +2,29 @@
 #' @keywords internal
 #' @export
 #' @examples
+#' getGC()
+
+getGC <- function(window.size = c("500k", "400k", "300k", "200k", "100k", "50k")) {
+  require(BSgenome.Hsapiens.UCSC.hg19)
+  require(Biostrings)
+  window.size <- window.size[1]
+  bin <- get(paste0("bin.", window.size))
+  gcContent <- function(regions, ref = BSgenome.Hsapiens.UCSC.hg19) {
+    seq <- getSeq(ref, regions)
+    gc <- letterFrequency(seq, "GC")
+    acgt <- letterFrequency(seq, "ACGT")
+    as.vector(ifelse(acgt == 0, NA, gc/acgt))
+  }  # from SomaticSignatures
+  bin.gr <- GRanges(seqname = as.character(bin$V1), IRanges(start = bin$V2, end = bin$V3))
+  GC <- gcContent(bin.gr)
+  assign(paste0("GC.", window.size), GC)
+}
+
+
+#' @param
+#' @keywords internal
+#' @export
+#' @examples
 #' z2t()
 
 z2t <- function(z, lambdax, lambday) {
