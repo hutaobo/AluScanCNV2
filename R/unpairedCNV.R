@@ -50,7 +50,7 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
   if (!grepl("chr", sample.5k.read[1, 1])) {
     sample.5k.read[, 1] <- paste0("chr", sample.5k.read[, 1])
   }
-  sample.5k.read <- merge(bin.5k[, 1:3], sample.5k.read, all = TRUE, sort = FALSE)
+  sample.5k.read <- merge(bin.5k[, 1:3], sample.5k.read, all = TRUE, sort = FALSE, by.x = colnames(bin.5k)[1:3], by.y = colnames(sample.5k.read)[1:3])
   sample.5k.read[is.na(sample.5k.read)] <- 0
   colnames(sample.5k.read) <- c("chr", "start", "end", sample.name)
   sample.5k.read[, 4] <- outlier(sample.5k.read[, 4])
