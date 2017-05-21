@@ -7,7 +7,7 @@
 #' @examples
 #' unpairedCNV()
 
-unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, custom.ref.info = NULL, qOutlier = 0.95, output.path = "./", ...) {
+unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, custom.ref.info = NULL, qOutlier = 0.95, output.path = "./", doc.file = TRUE, ...) {
   sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
   window.size <- window.size[1]
   gender <- gender[1]
@@ -36,11 +36,13 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
   ref.5k.read[, 4:ncol(ref.5k.read)] <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, outlier)
   ref.read <- apply(ref.5k.read[, 4:ncol(ref.5k.read)], 2, function(x) tapply(x, as.factor(factor$F), sum))
 
-  sample.5k.read <- read.table(sample.5k.doc, stringsAsFactors = FALSE)
+  if(doc.file == TRUE) {
+    sample.5k.read <- read.table(sample.5k.doc, stringsAsFactors = FALSE)
+    sample.5k.read <- sample.5k.read[, c(1:3, 6)]
+  }
   if (!grepl("chr", sample.5k.read[1, 1])) {
     sample.5k.read[, 1] <- paste0("chr", sample.5k.read[, 1])
   }
-  sample.5k.read <- sample.5k.read[, c(1:3, 6)]
   sample.5k.read <- merge(bin.5k[, 1:3], sample.5k.read, all = TRUE, sort = FALSE)
   sample.5k.read[is.na(sample.5k.read)] <- 0
   colnames(sample.5k.read) <- c("chr", "start", "end", sample.name)
