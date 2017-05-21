@@ -8,8 +8,14 @@
 #' pairedCNV()
 
 pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "200k", "100k", "50k"), gender = c("M", "F"), qOutlier = 0.95, output.path = "./", doc.file = TRUE, ...) {
-  sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
-  control.name <- sub(".5k.doc", "", basename(control.5k.doc))
+  if(doc.file == TRUE) {
+    sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
+    control.name <- sub(".5k.doc", "", basename(control.5k.doc))
+  } else {
+    sample.name <- colnames(sample.5k.doc)[4]
+    control.name <- colnames(control.5k.doc)[4]
+  }
+
   window.size <- window.size[1]
   gender <- gender[1]
   factor <- get(paste0("factor.", window.size))  # F
