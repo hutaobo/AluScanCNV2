@@ -19,14 +19,16 @@ predictTumor <- function(file_path) {
   load("fit.RData", verbose = FALSE)  # load the prediction model 'fit'
   pred <- predict(fit, feature, type = "class")
   if(pred == "tumor") {
-    cat("############################################\n",
+    cat("\n",
+        "############################################\n",
         "# The blood sample is from Cancer patient. #\n",
-        "############################################")
+        "############################################\n")
     return(TRUE)
   } else if (pred == "control") {
-    cat("################################################\n",
+    cat("\n",
+        "################################################\n",
         "# The blood sample is from Non-Cancer patient. #\n",
-        "################################################")
+        "################################################\n")
     return(FALSE)
   }
 }
