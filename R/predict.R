@@ -20,15 +20,15 @@ predictTumor <- function(file_path) {
   pred <- predict(fit, feature, type = "class")
   if(pred == "tumor") {
     cat("\n",
-        "############################################\n",
-        "# The blood sample is from Cancer patient. #\n",
-        "############################################\n")
+        "#############################################\n",
+        "# This blood sample is from Cancer patient. #\n",
+        "#############################################\n")
     return(TRUE)
   } else if (pred == "control") {
     cat("\n",
-        "################################################\n",
-        "# The blood sample is from Non-Cancer patient. #\n",
-        "################################################\n")
+        "#################################################\n",
+        "# This blood sample is from Non-Cancer patient. #\n",
+        "#################################################\n")
     return(FALSE)
   }
 }
