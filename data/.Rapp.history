@@ -1,0 +1,12 @@
+load("/Users/hutaobo/Downloads/AluScanCNV/data/recurr_cnv.rda")
+recurr_cnv
+library('GenomicRanges')
+library('GenomeInfoDb')
+library('GenomicRanges')
+source("https://bioconductor.org/biocLite.R")#
+biocLite("GenomicRanges")
+library("GenomicRanges")
+source("https://bioconductor.org/biocLite.R")#
+biocLite("GenomeInfoDb")
+library('GenomeInfoDb')
+library('GenomeInfoDb')
