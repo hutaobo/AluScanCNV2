@@ -4,7 +4,7 @@
 \alias{predictTumor}
 \title{Predict the tumor occurrence}
 \usage{
-predictTumor(file_path)
+predictTumor(file_path, model = NULL, rCNV = NULL, return = FALSE)
 }
 \description{
 Predict the tumor occurrence
