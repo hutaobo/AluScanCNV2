@@ -7,7 +7,7 @@
 #' @examples
 #' pairedCNV()
 
-pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "250k", "200k", "100k", "50k"), gender = c("M", "F"), qOutlier = 0.95, output.path = "./", doc.file = TRUE, ...) {
+pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "250k", "200k", "100k", "50k"), gender = c("M", "F"), qOutlier = 0.95, output.path = "./", ...) {
   if(doc.file == TRUE) {
     sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
     control.name <- sub(".5k.doc", "", basename(control.5k.doc))
@@ -27,7 +27,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
     return(x)
   }  # remove outliers
 
-  if(doc.file == TRUE) {
+  if(is.character(sample.5k.doc)) {
     sample.5k.read <- read.table(sample.5k.doc, stringsAsFactors = FALSE)
     sample.5k.read <- sample.5k.read[, c(1:3, 6)]
   } else {
@@ -42,7 +42,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   sample.5k.read[, 4] <- outlier(sample.5k.read[, 4])
   sample.read <- tapply(sample.5k.read[, 4], as.factor(factor$F), sum)
 
-  if(doc.file == TRUE) {
+  if(is.character(control.5k.doc)) {
     control.5k.read <- read.table(control.5k.doc, stringsAsFactors = FALSE)
     control.5k.read <- control.5k.read[, c(1:3, 6)]
   } else {

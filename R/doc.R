@@ -34,7 +34,8 @@ dataMerge <- function(data_1, data_2) {
 doc2data <- function(doc.list, write.file = TRUE) {
   docs <- read.table(doc.list, stringsAsFactors = FALSE)
   for (i in 1:nrow(docs)) {
-    doc_file <- read.table(docs[i, ], stringsAsFactors = FALSE)
+    require(data.table)
+    doc_file <- fread(paste0(dirname(doc.list), "/", docs[i, ]), stringsAsFactors = FALSE, data.table = FALSE)
     sample_name <- strsplit(docs[i, ], split = "[.]")[[1]][1]
     doc_file <- doc_file[, c(1:3, 6)]
     colnames(doc_file) <- c("chr", "start", "end", sample_name)
