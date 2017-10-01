@@ -8,7 +8,8 @@
 #' pairedCNV()
 
 pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "250k", "200k", "100k", "50k"), gender = c("M", "F"), qOutlier = 0.95, output.path = "./", ...) {
-  if(doc.file == TRUE) {
+  # Automatically determine whether 'sample.5k.doc' is file_path or dataframe
+  if(is.character(sample.5k.doc)) {
     sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
     control.name <- sub(".5k.doc", "", basename(control.5k.doc))
   } else {

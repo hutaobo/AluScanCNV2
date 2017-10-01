@@ -2,12 +2,12 @@
 % Please edit documentation in R/predict.R
 \name{predictTumor}
 \alias{predictTumor}
-\title{Predict the tumor occurrence}
+\title{Predict the occurrence of tumor}
 \usage{
 predictTumor(file_path, model = NULL, rCNV = NULL, return = FALSE)
 }
 \description{
-Predict the tumor occurrence
+Predict the occurrence of tumor
 }
 \examples{
 predictTumor()
