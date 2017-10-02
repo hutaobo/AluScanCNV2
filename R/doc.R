@@ -31,12 +31,12 @@ dataMerge <- function(data_1, data_2) {
 #' @examples
 #' doc2data()
 
-doc2data <- function(doc.list, write.file = TRUE) {
-  docs <- read.table(doc.list, stringsAsFactors = FALSE)
-  for (i in 1:nrow(docs)) {
+doc2data <- function(doc.list, write.file.path = NULL) {
+  # 'doc.list' is a character vector
+  for (i in seq_along(doc.list)) {
     require(data.table)
-    doc_file <- fread(paste0(dirname(doc.list), "/", docs[i, ]), stringsAsFactors = FALSE, data.table = FALSE)
-    sample_name <- strsplit(docs[i, ], split = "[.]")[[1]][1]
+    doc_file <- fread(doc.list[i], stringsAsFactors = FALSE, data.table = FALSE)
+    sample_name <- gsub('.5k.doc', '', basename(doc.list[i]))
     doc_file <- doc_file[, c(1:3, 6)]
     colnames(doc_file) <- c("chr", "start", "end", sample_name)
     if (i == 1) {
@@ -51,9 +51,9 @@ doc2data <- function(doc.list, write.file = TRUE) {
   data_file$chr <- factor(data_file$chr, levels = paste0("chr", c(1:22, "X", "Y")))
   data_file <- data_file[order(data_file$chr, data_file$start), ]
   data_file$chr <- as.character(data_file$chr)
-  if (write.file == TRUE) {
-    write.table(data_file, file = "reads.5k.data", quote = FALSE, col.names = TRUE, row.names = FALSE, sep = "\t")
-  } else {
+  if (is.null(write.file.path)) {
     return(data_file)
+  } else {
+    write.table(data_file, file = file.path(write.file.path, "reads.5k.data"), quote = FALSE, col.names = TRUE, row.names = FALSE, sep = "\t")
   }
 }
