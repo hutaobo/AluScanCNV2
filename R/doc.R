@@ -33,8 +33,9 @@ dataMerge <- function(data_1, data_2) {
 
 doc2data <- function(doc.list, write.file.path = NULL) {
   # 'doc.list' is a character vector
+  require(data.table)
   for (i in seq_along(doc.list)) {
-    require(data.table)
+    message("Processing ", i, ": ", doc.list[i])
     doc_file <- fread(doc.list[i], stringsAsFactors = FALSE, data.table = FALSE)
     sample_name <- gsub('.5k.doc', '', basename(doc.list[i]))
     doc_file <- doc_file[, c(1:3, 6)]
