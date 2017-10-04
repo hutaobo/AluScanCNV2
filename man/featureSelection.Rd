@@ -4,7 +4,8 @@
 \alias{featureSelection}
 \title{Cross platform feature selection}
 \usage{
-featureSelection(nonCancerListA, CancerListA, nonCancerListB, CancerListB)
+featureSelection(nonCancerListA, CancerListA, nonCancerListB, CancerListB,
+  Cri = 0.2)
 }
 \description{
 Cross platform feature selection

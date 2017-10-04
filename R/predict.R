@@ -51,23 +51,25 @@ predictTumor <- function(file_path, model = NULL, rCNV = NULL, return = FALSE) {
 #' @examples
 #' featureSelection()
 
-featureSelection <- function(nonCancerListA, CancerListA, nonCancerListB, CancerListB) {
-  if(is.character(nonCancerListA)) {
-    nonCancerListA <- doc2data(doc.list = nonCancerListA, write.file = FALSE)
+featureSelection <- function(nonCancerListA, CancerListA, nonCancerListB, CancerListB, Cri = 0.2) {
+  require(GenomicRanges)
+  df2gr <- function(x) {
+    if(is.character(x)) {
+      x <- seg2CNV(x)
+    }
+    x <- subset(x, recurrence >= (ncol(x) - 4) * Cri)
+    x <- makeGRangesFromDataFrame(x, keep.extra.columns = TRUE)
   }
-  if(is.character(CancerListA)) {
-    CancerListA <- doc2data(doc.list = CancerListA, write.file = FALSE)
-  }
-  if(is.character(nonCancerListB)) {
-    nonCancerListB <- doc2data(doc.list = nonCancerListB, write.file = FALSE)
-  }
-  if(is.character(CancerListB)) {
-    CancerListB <- doc2data(doc.list = CancerListB, write.file = FALSE)
-  }
-  Cri <- 0.2
-  control_recurr <- subset(control_cnv_gr, WGS >= length(WGS_control_blood) * Cri & AluScan >= length(AluScan_control_blood) * Cri)
-  tumor_recurr <- subset(tumor_cnv_gr, WGS >= length(WGS_tumor_blood) * Cri & AluScan >= length(AluScan_tumor_blood) * Cri)
-  a <- control_recurr[, 0]
-  b <- tumor_recurr[, 0]
+  # Choose frequency > 'Cri' in both control and tumor
+  nonCancerListA <- df2gr(nonCancerListA)
+  CancerListA <- df2gr(CancerListA)
+  nonCancerListB <- df2gr(nonCancerListB)
+  CancerListB <- df2gr(CancerListB)
+  # both platform reached significant enrichment
+  nonCancer_recurr <- subsetByOverlaps(nonCancerListA, nonCancerListB)
+  Cancer_recurr <- subsetByOverlaps(CancerListA, CancerListB)
+  # bind, but remove the overlap of cancer and non-cancer
+  a <- nonCancer_recurr
+  b <- Cancer_recurr
   recurr_cnv <- c(GenomicRanges::setdiff(a, GenomicRanges::intersect(a, b)), GenomicRanges::setdiff(b, GenomicRanges::intersect(a, b)))
 }

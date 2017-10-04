@@ -4,7 +4,7 @@
 \alias{seg2CNV}
 \title{Using 'seg' files to make the CNV file}
 \usage{
-seg2CNV(seg.list)
+seg2CNV(seg.list, return = c("df", "gr"))
 }
 \description{
 Using 'seg' files to make the CNV file
