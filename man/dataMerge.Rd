@@ -7,7 +7,7 @@
 dataMerge(data_1, data_2)
 }
 \description{
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
+Merge two 'data' files
 }
 \examples{
 dataMerge()

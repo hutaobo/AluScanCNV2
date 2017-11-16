@@ -7,7 +7,7 @@
 #' @examples
 #' unpairedCNV()
 
-unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "250k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, custom.ref.info = NULL, qOutlier = 0.95, output.path = "./", ...) {
+unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "250k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, custom.ref.info = NULL, qOutlier = 0.95, output.path = "./", replace = TRUE, ...) {
   # Automatically determine whether 'sample.5k.doc' is file_path or dataframe
   if(is.character(sample.5k.doc)) {
     sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
@@ -17,6 +17,13 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
 
   window.size <- window.size[1]
   gender <- gender[1]
+
+  # determine if the output file has already exist
+  output_file <- paste(output.path, "/", sample.name, ".local.", window.size, ".unpaired.seg", sep = "")
+  if (replace == FALSE & file.exists(output_file)) {
+    return(NULL)
+  }
+
   factor <- get(paste0("factor.", window.size))  # F
   bin <- get(paste0("bin.", window.size))  # FR
   pos <- get(paste0("pos.", window.size))  # FR2
@@ -90,5 +97,5 @@ unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "
   } else if (gender == "F") {
     data <- localCNV4Pool(sample.read, ref.read[, ref.info[ref.info$Gender == "F", "Name"]], GC, pos, GCmedian = TRUE)
   }
-  write.table(data, paste(output.path, "/", sample.name, ".local.", window.size, ".unpaired.seg", sep = ""), col.name = T, row.name = FALSE, quote = FALSE, sep = "\t")
+  write.table(data, output_file, col.name = T, row.name = FALSE, quote = FALSE, sep = "\t")
 }

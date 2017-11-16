@@ -1,5 +1,4 @@
 #' Paired CNV calling
-#'
 #' https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
 #' @param
 #' @keywords
@@ -7,9 +6,9 @@
 #' @examples
 #' pairedCNV()
 
-pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "250k", "200k", "100k", "50k"), gender = c("M", "F"), qOutlier = 0.95, output.path = "./", ...) {
+pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "250k", "200k", "100k", "50k"), gender = c("M", "F"), qOutlier = 0.95, output.path = "./", replace = TRUE, ...) {
   # Automatically determine whether 'sample.5k.doc' is file_path or dataframe
-  if(is.character(sample.5k.doc)) {
+  if (is.character(sample.5k.doc)) {
     sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
     control.name <- sub(".5k.doc", "", basename(control.5k.doc))
   } else {
@@ -19,6 +18,13 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
 
   window.size <- window.size[1]
   gender <- gender[1]
+
+  # determine if the output file has already exist
+  output_file <- paste(output.path, "/", sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = "")
+  if (replace == FALSE & file.exists(output_file)) {
+    return(NULL)
+  }
+
   factor <- get(paste0("factor.", window.size))  # F
   bin <- get(paste0("bin.", window.size))  # FR
   pos <- get(paste0("pos.", window.size))  # FR2
@@ -28,7 +34,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
     return(x)
   }  # remove outliers
 
-  if(is.character(sample.5k.doc)) {
+  if (is.character(sample.5k.doc)) {
     sample.5k.read <- read.table(sample.5k.doc, stringsAsFactors = FALSE)
     sample.5k.read <- sample.5k.read[, c(1:3, 6)]
   } else {
@@ -43,7 +49,7 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   sample.5k.read[, 4] <- outlier(sample.5k.read[, 4])
   sample.read <- tapply(sample.5k.read[, 4], as.factor(factor$F), sum)
 
-  if(is.character(control.5k.doc)) {
+  if (is.character(control.5k.doc)) {
     control.5k.read <- read.table(control.5k.doc, stringsAsFactors = FALSE)
     control.5k.read <- control.5k.read[, c(1:3, 6)]
   } else {
@@ -84,13 +90,13 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
   #### male samples
   if (gender == "M") {
     data <- localCNV4Paired(sample.read, control.read, GC, pos, GCmedian = TRUE)
-    write.table(data, paste(output.path, "/", sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = ""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
+    write.table(data, output_file, row.names = FALSE, col.names = TRUE, quote = FALSE, sep = "\t")
   }
 
   #### female samples
   if (gender == "F") {
     femaleChrs500k <- pos$chr <= 23
     data <- localCNV4Paired(sample.read[femaleChrs500k], control.read[femaleChrs500k], GC[femaleChrs500k], pos[femaleChrs500k, ], GCmedian = TRUE)
-    write.table(data, paste(output.path, "/", sample.name, "-", control.name, ".local.", window.size, ".paired.seg", sep = ""), row.names = FALSE, col.names = T, quote = FALSE, sep = "\t")
+    write.table(data, output_file, row.names = FALSE, col.names = TRUE, quote = FALSE, sep = "\t")
   }
 }

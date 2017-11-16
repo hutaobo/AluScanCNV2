@@ -1,6 +1,4 @@
 #' Merge two 'data' files
-#'
-#' https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
 #' @param
 #' @keywords
 #' @export
@@ -23,8 +21,6 @@ dataMerge <- function(data_1, data_2) {
 
 
 #' Using 'doc' files to make the 'data' file
-#'
-#' https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
 #' @param
 #' @keywords
 #' @export

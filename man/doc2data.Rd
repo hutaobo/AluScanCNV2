@@ -7,7 +7,7 @@
 doc2data(doc.list, write.file.path = NULL)
 }
 \description{
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
+Using 'doc' files to make the 'data' file
 }
 \examples{
 doc2data()
