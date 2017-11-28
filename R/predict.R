@@ -3,15 +3,16 @@
 #' @keywords
 #' @export
 #' @examples
-#' predictTumor()
+#' cancerPrediction()
 
-predictTumor <- function(file_path, model = NULL, rCNV = NULL, return = FALSE) {
+cancerPrediction <- function(file_path, model = NULL, rCNV = NULL, return = FALSE) {
   require(caret)
   file <- read.table(file_path, header = TRUE, stringsAsFactors = FALSE)
   cnv <- data.frame(chr = file$chromosome, start = file$start, end = file$end, cnv = ifelse(file$p.value >= 0.01, 0, ifelse(file$zScore > 0, 1, -1)), stringsAsFactors = FALSE)
   cnv_gr <- makeGRangesFromDataFrame(cnv, keep.extra.columns = TRUE)
   seqlevelsStyle(cnv_gr) <- "UCSC"
-  if(is.null(rCNV)) {
+  # 'feature' is the input of 'predict' function
+  if (is.null(rCNV)) {
     feature <- subsetByOverlaps(cnv_gr, recurr_cnv) # 'recurr_cnv' is the GenomicRanges
   } else {
     feature <- subsetByOverlaps(cnv_gr, rCNV)
@@ -20,14 +21,14 @@ predictTumor <- function(file_path, model = NULL, rCNV = NULL, return = FALSE) {
   rownames(feature) <- with(feature, paste0(seqnames, ":", start, "-", end))
   feature <- feature[, "cnv", drop = FALSE]
   feature <- data.frame(t(feature), stringsAsFactors = FALSE)
-  if(is.null(model)) {
-    pred <- caret::predict(object = fit, newdata = feature, type = "class") # 'fit' is the prediction model
+  if (is.null(model)) {
+    pred <- caret::predict.train(object = fit, newdata = feature, type = "class") # 'fit' is the prediction model
   } else {
-    pred <- caret::predict(object = model, newdata = feature, type = "class")
+    pred <- caret::predict.train(object = model, newdata = feature, type = "class")
   }
   result <- ifelse(pred == "tumor", TRUE, FALSE)
-  if(!return) {
-    if(pred == "tumor") {
+  if (!return) {
+    if (pred == "tumor") {
       cat("\n",
           "#############################################\n",
           "# This blood sample is from Cancer patient. #\n",

@@ -1,5 +1,4 @@
 #' Using 'seg' files to make the CNV file
-#'
 #' @param
 #' @keywords
 #' @export
@@ -11,7 +10,7 @@ seg2CNV <- function(seg.list, return = c('df', 'gr')) {
   require(data.table)
   for (i in seq_along(seg.list)) {
     sample_name <- strsplit(basename(seg.list[i]), '[.]')[[1]][1]
-    file <- read.table(seg.list[i], header = TRUE, stringsAsFactors = FALSE)
+    file <- fread(seg.list[i], header = TRUE, stringsAsFactors = FALSE, data.table = FALSE)
     cnv <- data.frame(chr = file$chromosome, start = file$start, end = file$end, cnv = ifelse(file$p.value >= 0.01, "N", ifelse(file$zScore > 0, "G", "L")), stringsAsFactors = FALSE)
     colnames(cnv)[4] <- sample_name
     if (i == 1) {

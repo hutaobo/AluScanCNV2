@@ -2,7 +2,8 @@
 % Please edit documentation in R/unpairedCNV.R
 \name{unpairedCNV}
 \alias{unpairedCNV}
-\title{Unpaired CNV calling}
+\title{Unpaired CNV calling
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf}
 \usage{
 unpairedCNV(sample.5k.doc, window.size = c("500k", "400k", "300k", "250k",
   "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA",
@@ -10,6 +11,7 @@ unpairedCNV(sample.5k.doc, window.size = c("500k", "400k", "300k", "250k",
   output.path = "./", replace = TRUE, ...)
 }
 \description{
+Unpaired CNV calling
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
 }
 \examples{

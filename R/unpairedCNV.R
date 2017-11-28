@@ -1,5 +1,4 @@
 #' Unpaired CNV calling
-#'
 #' https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
 #' @param
 #' @keywords
@@ -9,7 +8,7 @@
 
 unpairedCNV <- function(sample.5k.doc, window.size = c("500k", "400k", "300k", "250k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA", "M", "F"), custom.ref = NULL, custom.ref.info = NULL, qOutlier = 0.95, output.path = "./", replace = TRUE, ...) {
   # Automatically determine whether 'sample.5k.doc' is file_path or dataframe
-  if(is.character(sample.5k.doc)) {
+  if (is.character(sample.5k.doc)) {
     sample.name <- sub(".5k.doc", "", basename(sample.5k.doc))
   } else {
     sample.name <- colnames(sample.5k.doc)[4]
