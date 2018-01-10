@@ -104,21 +104,21 @@ cnv.cal <- function(data, log2.threshold = 0.6, chromosomal.normalization = FALS
         lambda.ref <- data$GClambdaRef
         # lambda.test <- mean(data$test) lambda.ref <- mean(data$ref)
         for (chr in chrom) {
-            # test.lambda[[chr]]<-lambda.test ref.lambda[[chr]]<-lambda.ref
+            # test.lambda[[chr]] <- lambda.test ref.lambda[[chr]] <- lambda.ref
             test.lambda[[chr]] <- mean(data$test)
             ref.lambda[[chr]] <- mean(data$ref)
         }
-        # norm <- lambda.test/lambda.ref norm = mean(lambda.test)/mean(lambda.ref)
+        # norm <- lambda.test / lambda.ref norm = mean(lambda.test) / mean(lambda.ref)
         norm <- sum(data$test)/sum(data$ref)
         ratio <- data$test/data$ref
         data$log2 <- log2(ratio/norm)
         subp <- subset(data, log2 >= 0)
-        # data[rownames(subp),'p.value'] <- pnorm(z2t(subp$test/subp$ref,lambda.test,lambda.ref), lower.tail=FALSE)
+        # data[rownames(subp), 'p.value'] <- pnorm(z2t(subp$test / subp$ref, lambda.test, lambda.ref), lower.tail = FALSE)
         value <- z2t(subp$test/subp$ref, lambda.test[data$log2 >= 0], lambda.ref[data$log2 >= 0])
         data[rownames(subp), "p.value"] <- pnorm(value, sd = sd(value, na.rm = TRUE), lower.tail = FALSE)
         data[rownames(subp), "zScore"] <- value
         subn <- subset(data, log2 < 0)
-        # data[rownames(subn),'p.value'] <- pnorm(z2t(subn$test/subn$ref,lambda.test,lambda.ref), lower.tail=TRUE)
+        # data[rownames(subn), 'p.value'] <- pnorm(z2t(subn$test / subn$ref, lambda.test, lambda.ref), lower.tail = TRUE)
         value <- z2t(subn$test/subn$ref, lambda.test[data$log2 < 0], lambda.ref[data$log2 < 0])
         data[rownames(subn), "p.value"] <- pnorm(value, sd = sd(value, na.rm = TRUE), lower.tail = TRUE)
         data[rownames(subn), "zScore"] <- value

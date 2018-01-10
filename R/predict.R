@@ -22,9 +22,9 @@ cancerPrediction <- function(file_path, model = NULL, rCNV = NULL, return = FALS
   feature <- feature[, "cnv", drop = FALSE]
   feature <- data.frame(t(feature), stringsAsFactors = FALSE)
   if (is.null(model)) {
-    pred <- caret::predict.train(object = fit, newdata = feature, type = "class") # 'fit' is the prediction model
+    pred <- caret::predict.train(object = fit, newdata = feature, type = "raw") # 'fit' is the prediction model
   } else {
-    pred <- caret::predict.train(object = model, newdata = feature, type = "class")
+    pred <- caret::predict.train(object = model, newdata = feature, type = "raw")
   }
   result <- ifelse(pred == "tumor", TRUE, FALSE)
   if (!return) {
