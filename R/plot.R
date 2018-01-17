@@ -20,13 +20,13 @@ plotSelectedFeatures <- function(output_path, nonCancerListA, CancerListA, nonCa
   nonCancerListA_start <- data.frame(CHR = gsub("chr", "", nonCancerListA$chr), MapInfo = nonCancerListA$start, stringsAsFactors = FALSE)
   nonCancerListA_end <- data.frame(CHR = gsub("chr", "", nonCancerListA$chr), MapInfo = nonCancerListA$end, stringsAsFactors = FALSE)
 
-  #- CancerListB <- list.files(path = '/mnt/data1/gene/thuac/Weka/result/seg/KG/500k/', full.names = TRUE)
+  #- CancerListB <- list.files(path = '/mnt/data1/gene/thuac/Weka/result/seg/ICGC/500k/', full.names = TRUE)
   CancerListB <- seg2CNV(CancerListB)
   CancerListB$recurrence <- CancerListB$recurrence / (ncol(CancerListB) - 4)
   CancerListB_start <- data.frame(CHR = gsub("chr", "", CancerListB$chr), MapInfo = CancerListB$start, stringsAsFactors = FALSE)
   CancerListB_end <- data.frame(CHR = gsub("chr", "", CancerListB$chr), MapInfo = CancerListB$end, stringsAsFactors = FALSE)
 
-  #- nonCancerListB <- list.files(path = '/mnt/data1/gene/thuac/Weka/result/seg/ICGC/500k/', full.names = TRUE)
+  #- nonCancerListB <- list.files(path = '/mnt/data1/gene/thuac/Weka/result/seg/KG/500k/', full.names = TRUE)
   nonCancerListB <- seg2CNV(nonCancerListB)
   nonCancerListB$recurrence <- nonCancerListB$recurrence / (ncol(nonCancerListB) - 4)
   nonCancerListB_start <- data.frame(CHR = gsub("chr", "", nonCancerListB$chr), MapInfo = nonCancerListB$start, stringsAsFactors = FALSE)
