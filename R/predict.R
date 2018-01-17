@@ -13,35 +13,18 @@ cancerPrediction <- function(file_path, model = NULL, rCNV = NULL, return = FALS
   seqlevelsStyle(cnv_gr) <- "UCSC"
   # 'feature' is the input of 'predict' function
   if (is.null(rCNV)) {
-    feature <- subsetByOverlaps(cnv_gr, recurr_cnv) # 'recurr_cnv' is the GenomicRanges
-  } else {
-    feature <- subsetByOverlaps(cnv_gr, rCNV)
+    rCNV <- recurr_cnv # 'recurr_cnv' is the GenomicRanges
   }
+  feature <- subsetByOverlaps(cnv_gr, rCNV)
   feature <- as.data.frame(feature)
   rownames(feature) <- with(feature, paste0(seqnames, ":", start, "-", end))
   feature <- feature[, "cnv", drop = FALSE]
   feature <- data.frame(t(feature), stringsAsFactors = FALSE)
   if (is.null(model)) {
-    pred <- caret::predict.train(object = fit, newdata = feature, type = "raw") # 'fit' is the prediction model
-  } else {
-    pred <- caret::predict.train(object = model, newdata = feature, type = "raw")
+    model <- fit # 'fit' is the prediction model
   }
-  result <- ifelse(pred == "tumor", TRUE, FALSE)
-  if (!return) {
-    if (pred == "tumor") {
-      cat("\n",
-          "#############################################\n",
-          "# This blood sample is from Cancer patient. #\n",
-          "#############################################\n")
-    } else if (pred == "control") {
-      cat("\n",
-          "#################################################\n",
-          "# This blood sample is from Non-Cancer patient. #\n",
-          "#################################################\n")
-    }
-  } else {
-    return(result)
-  }
+  pred <- caret::predict.train(object = model, newdata = feature, type = "raw")
+  if (!return) cat(as.character(pred)) else return(as.character(pred))
 }
 
 
@@ -53,7 +36,7 @@ cancerPrediction <- function(file_path, model = NULL, rCNV = NULL, return = FALS
 #' featureSelection()
 
 featureSelection <- function(nonCancerListA, CancerListA, nonCancerListB, CancerListB, Cri = 0.2) {
-  require(GenomicRanges)
+  library(GenomicRanges)
   df2gr <- function(x) {
     if(is.character(x)) {
       x <- seg2CNV(x)
@@ -61,7 +44,7 @@ featureSelection <- function(nonCancerListA, CancerListA, nonCancerListB, Cancer
     x <- subset(x, recurrence >= (ncol(x) - 4) * Cri)
     x <- makeGRangesFromDataFrame(x, keep.extra.columns = TRUE)
   }
-  # Choose frequency > 'Cri' in both control and tumor
+  # choose frequency > 'Cri' in both control and tumor
   nonCancerListA <- df2gr(nonCancerListA)
   CancerListA <- df2gr(CancerListA)
   nonCancerListB <- df2gr(nonCancerListB)
@@ -69,8 +52,43 @@ featureSelection <- function(nonCancerListA, CancerListA, nonCancerListB, Cancer
   # both platform reached significant enrichment
   nonCancer_recurr <- subsetByOverlaps(nonCancerListA, nonCancerListB)
   Cancer_recurr <- subsetByOverlaps(CancerListA, CancerListB)
-  # bind, but remove the overlap of cancer and non-cancer
+  # bind, and remove the overlap of cancer and non-cancer
   a <- nonCancer_recurr
   b <- Cancer_recurr
   recurr_cnv <- c(GenomicRanges::setdiff(a, GenomicRanges::intersect(a, b)), GenomicRanges::setdiff(b, GenomicRanges::intersect(a, b)))
+}
+
+
+#' Cross platform feature selection method_2
+#' @param
+#' @keywords
+#' @export
+#' @examples
+#' featureSelection2()
+
+featureSelection2 <- function(nonCancerListA, CancerListA, nonCancerListB, CancerListB, Cri = 0.25) {
+  library(GenomicRanges)
+  df2gr <- function(x) {
+    if(is.character(x)) {
+      x <- seg2CNV(x)
+    }
+    x$recurrence <- x$recurrence / (ncol(x) - 4)
+    return(x)
+  }
+  #- choose frequency > 'Cri' in both control and tumor
+  nonCancerListA <- df2gr(nonCancerListA)
+  CancerListA <- df2gr(CancerListA)
+  nonCancerListB <- df2gr(nonCancerListB)
+  CancerListB <- df2gr(CancerListB)
+  #- both platform reached significant enrichment
+  control <- merge(nonCancerListA, nonCancerListB, by = c("chr", "start", "end"), sort = FALSE)
+  control$recurrence <- pmin(control$recurrence.x, control$recurrence.y)
+  cancer <- merge(CancerListA, CancerListB, by = c("chr", "start", "end"), sort = FALSE)
+  cancer$recurrence <- pmin(cancer$recurrence.x, cancer$recurrence.y)
+  #- bind, and remove the overlap of cancer and non-cancer
+  total <- merge(control, cancer, by = c("chr", "start", "end"), sort = FALSE)
+  total <- total[, c('chr', 'start', 'end', 'recurrence.x.x', 'recurrence.y.x', 'recurrence.x', 'recurrence.x.y', 'recurrence.y.y', 'recurrence.y')]
+  total$recurrence <- total$recurrence.x - total$recurrence.y
+  recurr_cnv <- total[abs(total$recurrence) > Cri, ]
+  recurr_cnv <- makeGRangesFromDataFrame(recurr_cnv, keep.extra.columns = TRUE)
 }
