@@ -66,7 +66,7 @@ featureSelection <- function(nonCancerListA, CancerListA, nonCancerListB, Cancer
 #' @examples
 #' featureSelection2()
 
-featureSelection2 <- function(nonCancerListA, CancerListA, nonCancerListB, CancerListB, Cri = 0.25) {
+featureSelection2 <- function(nonCancerListA, CancerListA, nonCancerListB, CancerListB, Cri = 0.2) {
   library(GenomicRanges)
   df2gr <- function(x) {
     if(is.character(x)) {

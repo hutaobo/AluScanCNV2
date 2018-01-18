@@ -5,7 +5,7 @@
 #' @examples
 #' plotSelectedFeatures()
 
-plotSelectedFeatures <- function(output_path, nonCancerListA, CancerListA, nonCancerListB, CancerListB, Cri = 0.25) {
+plotSelectedFeatures <- function(output_path, nonCancerListA, CancerListA, nonCancerListB, CancerListB, Cri = 0.2) {
   library(quantsmooth)
 
   #- CancerListA <- list.files(path = '/mnt/data1/gene/thuac/Weka/result/seg_alu/tumor/500k/', full.names = TRUE)

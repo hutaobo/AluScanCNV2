@@ -5,7 +5,7 @@
 \title{Cross platform feature selection method_2}
 \usage{
 featureSelection2(nonCancerListA, CancerListA, nonCancerListB, CancerListB,
-  Cri = 0.25)
+  Cri = 0.2)
 }
 \description{
 Cross platform feature selection method_2

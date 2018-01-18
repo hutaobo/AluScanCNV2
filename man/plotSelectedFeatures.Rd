@@ -5,7 +5,7 @@
 \title{Quantsmooth plot of selected CNV features}
 \usage{
 plotSelectedFeatures(output_path, nonCancerListA, CancerListA, nonCancerListB,
-  CancerListB, Cri = 0.25)
+  CancerListB, Cri = 0.2)
 }
 \description{
 Quantsmooth plot of selected CNV features
