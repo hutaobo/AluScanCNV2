@@ -1,4 +1,5 @@
 # AluScanCNV
 
-library(devtools);
+library(devtools)
+
 install_github('hutaobo/AluScanCNV')
