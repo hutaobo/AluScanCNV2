@@ -65,4 +65,5 @@ summary(results)
 
 ## References
 Quinlan, A. R. and I. M. Hall (2010). "BEDTools: a flexible suite of utilities for comparing genomic features." Bioinformatics 26(6): 841-842.
+
 Yang, J. F., X. F. Ding, L. Chen, W. K. Mat, M. Z. Xu, J. F. Chen, J. M. Wang, L. Xu, W. S. Poon, A. Kwong, G. K. Leung, T. C. Tan, C. H. Yu, Y. B. Ke, X. Y. Xu, X. Y. Ke, R. C. Ma, J. C. Chan, W. Q. Wan, L. W. Zhang, Y. Kumar, S. Y. Tsang, S. Li, H. Y. Wang and H. Xue (2014). "Copy number variation analysis based on AluScan sequences." J. Clin. Bioinforma. 4(1): 15.
