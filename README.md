@@ -8,7 +8,7 @@ install_github('hutaobo/AluScanCNV')
 ```
 
 ## CNV calling
-The coverageBed tool of the BEDtools software (Quinlan and Hall, 2010) was used to calculate the depth of sequencing reads in the analysis-ready BAM file (coverageBed -hist -a 5k.bin -b output.bed > output.5k.doc). The outputted coverage file was applied to the AluScanCNV2 package for CNV calling.
+The coverageBed tool of the BEDtools software (Quinlan and Hall, 2010) was used to calculate the depth of sequencing reads in the analysis-ready BAM file (coverageBed -hist -a 5k.bin -b output.bed > output.5k.doc). The outputted coverage file was utilized in the AluScanCNV2 package for CNV calling.
 
 AluScanCNV2 relies on Geary-Hinkley transformation (GHT)-based comparison of the read-depth of a sequence window on the test sample with that on either a paired control sample in the case of 'paired CNV' analysis, or a reference template constructed from pooled reference samples in the case of 'unpaired CNV' analysis (Yang et al., 2014).
 ```{r}
