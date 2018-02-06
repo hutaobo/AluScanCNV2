@@ -7,6 +7,7 @@
 
 cancerPrediction <- function(file_path, model = NULL, rCNV = NULL, return = FALSE) {
   require(caret)
+  require(GenomicRanges)
   file <- read.table(file_path, header = TRUE, stringsAsFactors = FALSE)
   cnv <- data.frame(chr = file$chromosome, start = file$start, end = file$end, cnv = ifelse(file$p.value >= 0.01, 0, ifelse(file$zScore > 0, 1, -1)), stringsAsFactors = FALSE)
   cnv_gr <- makeGRangesFromDataFrame(cnv, keep.extra.columns = TRUE)
