@@ -23,6 +23,14 @@ sample_doc_path <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV
 unpairedCNV(sample.5k.doc = sample_doc_path, window.size = "500k", seq.method = "AluScan", output.path = "./")
 ```
 
+## Plot CNV frequency
+```{r}
+path_to_file_1 <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV")
+path_to_file_2 <- system.file("extdata/Breast1_1.5k.doc", package = "AluScanCNV")
+p <- plotFrequency(input = c(path_to_file_1, path_to_file_2))
+plot(p)
+```
+
 ## Identification of recurrent CNVs
 ```{r}
 alu_control <- list.files(path = 'path_to_folder_of_seg_files', full.names = TRUE)
