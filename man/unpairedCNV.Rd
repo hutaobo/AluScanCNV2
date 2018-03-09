@@ -2,18 +2,20 @@
 % Please edit documentation in R/unpairedCNV.R
 \name{unpairedCNV}
 \alias{unpairedCNV}
-\title{Unpaired CNV calling
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf}
+\title{Unpaired CNV calling}
 \usage{
 unpairedCNV(sample.5k.doc, window.size = c("500k", "400k", "300k", "250k",
   "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA",
   "M", "F"), custom.ref = NULL, custom.ref.info = NULL, qOutlier = 0.95,
   output.path = "./", replace = TRUE, ...)
 }
+\arguments{
+\item{sample.5k.doc}{An object or the path to the doc file.}
+}
 \description{
-Unpaired CNV calling
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
 }
 \examples{
-unpairedCNV()
+sample_doc_path <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV")
+unpairedCNV(sample.5k.doc = sample_doc_path, window.size = "500k", seq.method = "AluScan", output.path = "./")
 }

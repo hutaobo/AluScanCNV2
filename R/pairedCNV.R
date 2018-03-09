@@ -1,10 +1,13 @@
 #' Paired CNV calling
-#' https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
+#'
+#' @description https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4273479/pdf/13336_2014_Article_15.pdf
 #' @param
 #' @keywords
 #' @export
 #' @examples
-#' pairedCNV()
+#' control_doc_path <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV")
+#' tumor_doc_path <- system.file("extdata/Breast1_1.5k.doc", package = "AluScanCNV")
+#' pairedCNV(control.5k.doc = control_doc_path, sample.5k.doc = tumor_doc_path, window.size = "500k", output.path = "./")
 
 pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "400k", "300k", "250k", "200k", "100k", "50k"), gender = c("M", "F"), qOutlier = 0.95, output.path = "./", replace = TRUE, ...) {
   # Automatically determine whether 'sample.5k.doc' is file_path or dataframe
