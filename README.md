@@ -25,8 +25,8 @@ unpairedCNV(sample.5k.doc = sample_doc_path, window.size = "500k", seq.method = 
 
 ## Plot CNV frequency
 ```{r}
-path_to_file_1 <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV")
-path_to_file_2 <- system.file("extdata/Breast1_1.5k.doc", package = "AluScanCNV")
+path_to_file_1 <- system.file("extdata/Breast1_b.local.500k.unpaired.seg", package = "AluScanCNV")
+path_to_file_2 <- system.file("extdata/Breast1_1.local.500k.unpaired.seg", package = "AluScanCNV")
 p <- plotFrequency(input = c(path_to_file_1, path_to_file_2))
 plot(p)
 ```
