@@ -1,8 +1,8 @@
-Package: AluScanCNV
-Title: Copy number variation analysis based on AluScan sequences
+Package: AluScanCNV2
+Title: An R package for copy number variation-based cancer risk prediction
 Version: 2.0
 Authors@R: person("Taobo", "Hu", email = "thuac@connect.ust.hk", role = c("aut", "cre"))
-Description: Copy number variation analysis based on AluScan sequences.
+Description: The usage of next-generation sequencing (NGS) to detect copy number variation (CNV) is widely accepted in cancer research. AluScanCNV2 is an R package that integrates cross-platform CNV detection from NGS data for the purpose of CNV-based tumor prediction. Based on the AluScanCNV software developed by us previously, this software detects CNVs from sequencing data obtained through whole-genome sequencing, AluScan or other targeted next-generation sequencing platforms. It enables usage of CNVs detected in a test subject’s germline genome to predict the subject’s susceptibility to cancer.
 Depends: R (>= 3.0.0)
 License: GPL-3
 Encoding: UTF-8
