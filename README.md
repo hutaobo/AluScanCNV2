@@ -4,7 +4,7 @@
 AluScanCNV2 can be installed using the install_github function in the devtools package.
 ```{r}
 library(devtools)
-install_github('hutaobo/AluScanCNV')
+install_github('hutaobo/AluScanCNV2')
 ```
 
 ## CNV calling
@@ -14,19 +14,19 @@ AluScanCNV2 relies on Geary-Hinkley transformation (GHT)-based comparison of the
 ```{r}
 # Calling of paired CNV
 library(AluScanCNV)
-control_doc_path <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV")
-tumor_doc_path <- system.file("extdata/Breast1_1.5k.doc", package = "AluScanCNV")
+control_doc_path <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV2")
+tumor_doc_path <- system.file("extdata/Breast1_1.5k.doc", package = "AluScanCNV2")
 pairedCNV(control.5k.doc = control_doc_path, sample.5k.doc = tumor_doc_path, window.size = "500k", output.path = "./")
 
 # Calling of unpaired CNV
-sample_doc_path <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV")
+sample_doc_path <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV2")
 unpairedCNV(sample.5k.doc = sample_doc_path, window.size = "500k", seq.method = "AluScan", output.path = "./")
 ```
 
 ## Plot CNV frequency
 ```{r}
-path_to_file_1 <- system.file("extdata/Breast1_b.local.500k.unpaired.seg", package = "AluScanCNV")
-path_to_file_2 <- system.file("extdata/Breast1_1.local.500k.unpaired.seg", package = "AluScanCNV")
+path_to_file_1 <- system.file("extdata/Breast1_b.local.500k.unpaired.seg", package = "AluScanCNV2")
+path_to_file_2 <- system.file("extdata/Breast1_1.local.500k.unpaired.seg", package = "AluScanCNV2")
 p <- plotFrequency(input = c(path_to_file_1, path_to_file_2))
 plot(p)
 ```
