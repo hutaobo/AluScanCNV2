@@ -13,7 +13,7 @@ The coverageBed tool of the BEDtools software (Quinlan and Hall, 2010) was used 
 AluScanCNV2 relies on Geary-Hinkley transformation (GHT)-based comparison of the read-depth of a sequence window on the test sample with that on either a paired control sample in the case of 'paired CNV' analysis, or a reference template constructed from pooled reference samples in the case of 'unpaired CNV' analysis (Yang et al., 2014).
 ```{r}
 # Calling of paired CNV
-library(AluScanCNV)
+library(AluScanCNV2)
 control_doc_path <- system.file("extdata/Breast1_b.5k.doc", package = "AluScanCNV2")
 tumor_doc_path <- system.file("extdata/Breast1_1.5k.doc", package = "AluScanCNV2")
 pairedCNV(control.5k.doc = control_doc_path, sample.5k.doc = tumor_doc_path, window.size = "500k", output.path = "./")
@@ -34,7 +34,7 @@ plot(p)
 ## Identification of recurrent CNVs
 ```{r}
 alu_control <- list.files(path = 'path_to_folder_of_seg_files', full.names = TRUE)
-library(AluScanCNV)
+library(AluScanCNV2)
 alu_control <- seg2CNV(alu_control)
 alu_control$recurrence <- alu_control$recurrence / (ncol(alu_control) - 4)
 ```
