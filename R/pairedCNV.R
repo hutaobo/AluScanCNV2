@@ -47,6 +47,8 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
     sample.5k.read[, 1] <- paste0("chr", sample.5k.read[, 1])
   }
   sample.5k.read <- merge(bin.5k[, 1:3], sample.5k.read, all = TRUE, sort = FALSE, by.x = colnames(bin.5k)[1:3], by.y = colnames(sample.5k.read)[1:3])
+  sample.5k.read[, 1] <- factor(sample.5k.read[, 1], levels = paste0("chr", c(1:22, "X", "Y")))
+  sample.5k.read <- sample.5k.read[order(sample.5k.read[, 1], sample.5k.read[, 2]), ]
   sample.5k.read[is.na(sample.5k.read)] <- 0
   colnames(sample.5k.read) <- c("chr", "start", "end", sample.name)
   sample.5k.read[, 4] <- outlier(sample.5k.read[, 4])
@@ -62,6 +64,8 @@ pairedCNV <- function(sample.5k.doc, control.5k.doc, window.size = c("500k", "40
     control.5k.read[, 1] <- paste0("chr", control.5k.read[, 1])
   }
   control.5k.read <- merge(bin.5k[, 1:3], control.5k.read, all = TRUE, sort = FALSE, by.x = colnames(bin.5k)[1:3], by.y = colnames(control.5k.read)[1:3])
+  control.5k.read[, 1] <- factor(control.5k.read[, 1], levels = paste0("chr", c(1:22, "X", "Y")))
+  control.5k.read <- control.5k.read[order(control.5k.read[, 1], control.5k.read[, 2]), ]
   control.5k.read[is.na(control.5k.read)] <- 0
   colnames(control.5k.read) <- c("chr", "start", "end", control.name)
   control.5k.read[, 4] <- outlier(control.5k.read[, 4])
