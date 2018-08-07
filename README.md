@@ -71,6 +71,14 @@ results <- resamples(list(cart = fit.cart, knn = fit.knn, svm = fit.svm, rf = fi
 summary(results)
 ```
 
+## Functions of validation
+```{r}
+# calibration of the observed probability vs. prediction probability
+
+# c-statistics
+
+```
+
 ## References
 Quinlan, A. R. and I. M. Hall (2010). "BEDTools: a flexible suite of utilities for comparing genomic features." Bioinformatics 26(6): 841-842.
 
