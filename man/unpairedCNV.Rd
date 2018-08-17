@@ -4,10 +4,11 @@
 \alias{unpairedCNV}
 \title{Unpaired CNV calling}
 \usage{
-unpairedCNV(sample.5k.doc, window.size = c("500k", "400k", "300k", "250k",
-  "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"), gender = c("NA",
-  "M", "F"), custom.ref = NULL, custom.ref.info = NULL, qOutlier = 0.95,
-  output.path = "./", replace = TRUE, ...)
+unpairedCNV(sample.5k.doc, window.size = c("500k", "400k", "300k",
+  "250k", "200k", "100k", "50k"), seq.method = c("AluScan", "WGS"),
+  gender = c("NA", "M", "F"), custom.ref = NULL,
+  custom.ref.info = NULL, qOutlier = 0.95, output.path = "./",
+  replace = TRUE, ...)
 }
 \arguments{
 \item{sample.5k.doc}{An object or the path to the doc file.}
