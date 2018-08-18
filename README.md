@@ -73,10 +73,11 @@ summary(results)
 
 ## Functions of validation
 ```{r}
-# calibration of the observed probability vs. prediction probability
-
-# c-statistics
-
+library(caret)
+library(ggplot2)
+# Calibration of the observed probability vs. prediction probability
+p <- calPlot(model, data, class)
+p
 ```
 
 ## References
